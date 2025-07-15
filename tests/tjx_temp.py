@@ -1,38 +1,21 @@
 import pytest
+import asyncio
+import pytest_asyncio
 
 @pytest.mark.Temp
 class TJXTemp:
-    #
-    def test02(self):
+    @pytest.mark.Temp02
+    @pytest.mark.asyncio
+    async def test_02(self):
+        await asyncio.sleep(3)
         assert 1 + 1 == 2
 
-    #
-    def test04(self):
+    @pytest.mark.Temp03
+    def test_03(self):
         assert 1 + 1 == 2
 
-    #
-    def test05(self):
-        assert 1 + 1 == 2
-
-    #
-    def test06(self):
+    @pytest.mark.Temp04
+    @pytest.mark.asyncio
+    async def test_04(self):
+        await asyncio.sleep(5)
         assert 1 + 1 == 3
-
-    #
-    # def test(self, case: array = None):
-    #     if case is None:
-    #         for name in dir(self):
-    #             if name.startswith('_test') and not name.endswith('__'):
-    #                 method = getattr(self, name)
-    #                 if callable(method):
-    #                     method()
-    #     else:
-    #         for item in case:
-    #             try:
-    #                 method = getattr(self, '_test' + item)
-    #                 if callable(method):
-    #                     method()
-    #             except AttributeError as e:
-    #                 pytest.fail(e)
-    #             except Exception as e:
-    #                 pytest.fail(e)
