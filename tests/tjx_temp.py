@@ -33,12 +33,9 @@ class TJXTemp:
                     if callable(method):
                         method()
                 except AttributeError as e:
-                    pass
-                    # logger.error(e)
+                    pytest.fail(e)
                 except Exception as e:
-                    pass
-                    # logger.error(e)
+                    pytest.fail(e)
 
 if __name__ == '__main__':
     pass
-    # unittest.main()
