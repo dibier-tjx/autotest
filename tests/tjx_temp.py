@@ -1,41 +1,38 @@
-import array
 import pytest
 
+@pytest.mark.Temp
 class TJXTemp:
     #
-    def _test02(self):
+    def test02(self):
         assert 1 + 1 == 2
 
     #
-    def _test04(self):
+    def test04(self):
         assert 1 + 1 == 2
 
     #
-    def _test05(self):
+    def test05(self):
         assert 1 + 1 == 2
 
     #
-    def _test06(self):
+    def test06(self):
         assert 1 + 1 == 3
 
     #
-    def test(self, case: array = None):
-        if case is None:
-            for name in dir(self):
-                if name.startswith('_test') and not name.endswith('__'):
-                    method = getattr(self, name)
-                    if callable(method):
-                        method()
-        else:
-            for item in case:
-                try:
-                    method = getattr(self, '_test' + item)
-                    if callable(method):
-                        method()
-                except AttributeError as e:
-                    pytest.fail(e)
-                except Exception as e:
-                    pytest.fail(e)
-
-if __name__ == '__main__':
-    pass
+    # def test(self, case: array = None):
+    #     if case is None:
+    #         for name in dir(self):
+    #             if name.startswith('_test') and not name.endswith('__'):
+    #                 method = getattr(self, name)
+    #                 if callable(method):
+    #                     method()
+    #     else:
+    #         for item in case:
+    #             try:
+    #                 method = getattr(self, '_test' + item)
+    #                 if callable(method):
+    #                     method()
+    #             except AttributeError as e:
+    #                 pytest.fail(e)
+    #             except Exception as e:
+    #                 pytest.fail(e)
