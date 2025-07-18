@@ -3,7 +3,7 @@ import allure
 import asyncio
 from g3_config import *
 
-@allure.feature("温度")
+@allure.feature("Temp")
 @pytest.mark.Temp
 class TJXG3Temp:
     async def pv_close_to_sp(self, sp: float, timeout: float = 2):
@@ -12,37 +12,67 @@ class TJXG3Temp:
         while True:
             elapsed_time = asyncio.get_running_loop().time() - start_time
             if elapsed_time > timeout:
-                return None
+                return None, timeout
             pv = await get_temp_pv()
             if abs(sp - pv) < tolerance:
-                return elapsed_time
+                return elapsed_time, timeout
             await asyncio.sleep(1)
 
-    @allure.story('具体文本信息')
     @pytest.mark.asyncio
     @pytest.mark.run(order=1)
+    @allure.title('test_01')
     async def test_01(self):
+        await set_temp_sp(10)
+        await set_temp_sp_source('Fixed')
+        await asyncio.sleep(2)
+        pv1 = await get_temp_pv()
+        if pv1 > 0:
+            await set_temp_sp_source('Disable')
+            await asyncio.sleep(2)
+            pv2 = await get_temp_pv()
+            if math.fabs(pv2) > 1e-10:
+                allure.attach(body=f'curr pv is {pv2}, expect is zero', name='Error', attachment_type=allure.attachment_type.TEXT)
+                assert False
+        else:
+            allure.attach(body=f'curr pv is {pv1}, expect is greater than zero', name='Error', attachment_type=allure.attachment_type.TEXT)
+            assert False
+
+    @pytest.mark.asyncio
+    @pytest.mark.run(order=2)
+    @allure.title('test_02')
+    async def test_02(self):
         await start_agit_to_temp()
         await set_temp_sp_source('Fixed')
         for it in get_temp_sps():
             pv1 = await get_temp_pv()
             await set_temp_sp(it)
-            elapsed_time = await self.pv_close_to_sp(it)
+            elapsed_time, timeout = await self.pv_close_to_sp(it)
+            pv2 = await get_temp_pv()
             if elapsed_time is not None:
-                pv2 = await get_temp_pv()
-                # 
+                allure.attach(body=f'{pv1}->{it} speed {elapsed_time} s, curr pv is {pv2}', name='Comment', attachment_type=allure.attachment_type.TEXT)
             else:
-                # timeout
-                pass
+                allure.attach(body=f'{pv1}->{it} speed {timeout} s, curr pv is {pv2}', name='Error', attachment_type=allure.attachment_type.TEXT)
+                await set_temp_sp_source('Disable')
+                assert False
         await set_temp_sp_source('Disable')
 
     @pytest.mark.asyncio
-    @pytest.mark.run(order=2)
-    async def test_02(self):
-        await start_agit_to_temp()
-        await set_temp_sp_source('Profile')
+    @pytest.mark.run(order=3)
+    @allure.title('test_03')
+    async def test_03(self):
         profile = await set_temp_profile()
-        assert await restart_runtime()
-        for it in profile:
-            await self.pv_close_to_sp(it[1], it[0])
-        await set_temp_sp_source('Disable')
+        if profile is not None:
+            await start_agit_to_temp()
+            assert await restart_runtime()
+            await set_temp_sp_source('Profile')
+            for it in profile:
+                pv1 = await get_temp_pv()
+                elapsed_time, timeout = await self.pv_close_to_sp(it[1], it[0])
+                pv2 = await get_temp_pv()
+                if elapsed_time is not None:
+                    allure.attach(body=f'{pv1}->{it[1]} speed {elapsed_time} s, curr pv is {pv2}', name='Comment', attachment_type=allure.attachment_type.TEXT)
+                else:
+                    allure.attach(body=f'{pv1}->{it[1]} speed {timeout} s, curr pv is {pv2}', name='Error', attachment_type=allure.attachment_type.TEXT)
+                    await set_temp_sp_source('Disable')
+                    assert False
+            await set_temp_sp_source('Disable')
