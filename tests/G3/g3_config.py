@@ -83,9 +83,9 @@ async def set_ph_sp_source(source: str = 'Fixed'):
 def get_mfcs() -> list:
     return [
         'Air',
-        'N',
-        'CO',
-        'O'
+        'N₂',
+        'CO₂',
+        'O₂'
     ]
 
 def get_mfc_sps(i: int) -> float:
