@@ -1,13 +1,12 @@
-import asyncio
+from api import G3API
+
+_g3api = G3API()
 
 async def start_agit_to_temp(): 
-    await asyncio.sleep(2)
-    pass
+    await _g3api.start_agit_to_temp(get_temp_to_agit())
 
 async def restart_runtime() -> bool:
-    await asyncio.sleep(2)
-    return True
-
+    return await _g3api.restart_runtime()
 
 '''
     DO
@@ -19,25 +18,23 @@ def get_do_sps() -> float:
         30.0
     ]
 
+async def set_do_sp(sp: float):
+    await _g3api.set_do_sp(sp)
+
 async def get_do_pv() -> float:
-    await asyncio.sleep(2)
-    return 0.
+    return await _g3api.get_do_pv()
 
 def get_do_tolerance() -> float:
     return 0.1
 
 async def set_do_profile() -> list:
-    await asyncio.sleep(2)
-    return [
+    return await _g3api.set_do_profile([
         [1, 10],
         [2, 20]
-    ]
+    ])
 
-async def set_do_sp(sp: float) -> float:
-    await asyncio.sleep(2)
-
-async def set_do_sp_source(source: str = 'Fixed'):
-    await asyncio.sleep(2)
+async def set_do_sp_source(source: str):
+    await _g3api.set_do_sp_source(source)
 
 '''
     pH
@@ -49,25 +46,24 @@ def get_ph_sps() -> float:
         30.0
     ]
 
+async def set_ph_sp(sp: float):
+    await _g3api.set_ph_sp(sp)
+
 async def get_ph_pv() -> float:
-    await asyncio.sleep(2)
-    return 0.
+    return await _g3api.get_ph_pv()
 
 def get_ph_tolerance() -> float:
     return 0.1
 
 async def set_ph_profile() -> list:
-    await asyncio.sleep(2)
-    return [
+    return await _g3api.set_ph_profile([
         [1, 10],
         [2, 20]
-    ]
+    ])
 
-async def set_ph_sp(sp: float) -> float:
-    await asyncio.sleep(2)
+async def set_ph_sp_source(source: str):
+    await _g3api.set_ph_sp_source(source)
 
-async def set_ph_sp_source(source: str = 'Fixed'):
-    await asyncio.sleep(2)
 
 '''
     EGA
@@ -96,17 +92,16 @@ def get_mfc_sps(i: int) -> float:
     ]
 
 async def get_mfc_pv(i: int) -> float:
-    await asyncio.sleep(2)
-    return 0.
+    return await _g3api.get_mfc_pv(i)
 
 def get_mfc_tolerance(i: int) -> float:
     return 0.1
 
-async def set_mfc_sp(i: int, sp: float) -> float:
-    await asyncio.sleep(2)
+async def set_mfc_sp(i: int, sp: float):
+    await _g3api.set_mfc_sp(i, sp)
 
-async def set_mfc_sp_source(i: int, source: str = 'Fixed'):
-    await asyncio.sleep(2)
+async def set_mfc_sp_source(i: int, source: str):
+    await _g3api.set_mfc_sp_source(i, source)
 
 '''
     Pump
@@ -129,17 +124,16 @@ def get_pump_sps(i: int) -> float:
     ]
 
 async def get_pump_pv(i: int) -> float:
-    await asyncio.sleep(2)
-    return 0.
+    return await _g3api.get_pump_pv(i)
 
 def get_pump_tolerance(i: int) -> float:
     return 0.1
 
-async def set_pump_sp(i: int, sp: float) -> float:
-    await asyncio.sleep(2)
+async def set_pump_sp(i: int, sp: float):
+    await _g3api.set_pump_sp(i, sp)
 
-async def set_pump_sp_source(i: int, source: str = 'Fixed'):
-    await asyncio.sleep(2)
+async def set_pump_sp_source(i: int, source: str):
+    await _g3api.set_pump_sp_source(i, source)
 
 '''
     Agit
@@ -151,25 +145,23 @@ def get_agit_sps() -> float:
         30.0
     ]
 
+async def set_agit_sp(sp: float):
+    await _g3api.set_agit_sp(sp)
+
 async def get_agit_pv() -> float:
-    await asyncio.sleep(2)
-    return 0.
+    return await _g3api.get_agit_pv()
 
 def get_agit_tolerance() -> float:
     return 0.1
 
 async def set_agit_profile() -> list:
-    await asyncio.sleep(2)
-    return [
+    return await _g3api.set_agit_profile([
         [1, 10],
         [2, 20]
-    ]
+    ])
 
-async def set_agit_sp(sp: float) -> float:
-    await asyncio.sleep(2)
-
-async def set_agit_sp_source(source: str = 'Fixed'):
-    await asyncio.sleep(2)
+async def set_agit_sp_source(source: str):
+    await _g3api.set_agit_sp_source(source)
 
 '''
     Temp
@@ -181,25 +173,23 @@ def get_temp_sps() -> float:
         30.0
     ]
 
-async def get_temp_pv() -> float:
-    await asyncio.sleep(2)
-    return 0.
-
 def get_temp_to_agit() -> float:
     return 300.
+
+async def set_temp_sp(sp: float):
+    await _g3api.set_temp_sp(sp)
+
+async def get_temp_pv() -> float:
+    return await _g3api.get_temp_pv()
 
 def get_temp_tolerance() -> float:
     return 0.1
 
 async def set_temp_profile() -> list:
-    await asyncio.sleep(2)
-    return [
+    return await _g3api.set_temp_profile([
         [1, 10],
         [2, 20]
-    ]
+    ])
 
-async def set_temp_sp(sp: float) -> float:
-    await asyncio.sleep(2)
-
-async def set_temp_sp_source(source: str = 'Fixed'):
-    await asyncio.sleep(2)
+async def set_temp_sp_source(source: str):
+    await _g3api.set_temp_sp_source(source)
