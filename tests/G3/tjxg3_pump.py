@@ -60,3 +60,26 @@ class TJXG3Pump:
                     await self._g3api.set_pump_sp_source(i, 'Disable')
                     assert False
             await self._g3api.set_pump_sp_source(i, 'Disable')
+
+    @pytest.mark.asyncio
+    @pytest.mark.run(order=3)
+    @allure.title('test_03')
+    async def test_03(self):
+        for i, pump in enumerate(self._g3api.get_pumps()):
+            if pump != 'Feed':
+                continue
+            profile = await self._g3api.set_pump_profile()
+            if profile is not None:
+                assert await self._g3api.restart_runtime()
+                await self._g3api.set_pump_sp_source(i, 'Profile')
+                for it in profile:
+                    pv1 = await self._g3api.get_pump_pv(i)
+                    elapsed_time, timeout = await self.pv_close_to_sp(it[1], it[0])
+                    pv2 = await self._g3api.get_pump_pv(i)
+                    if elapsed_time is not None:
+                        allure.attach(body=f'{pv1}->{it[1]} speed {elapsed_time} s, curr pv is {pv2}', name='Comment', attachment_type=allure.attachment_type.TEXT)
+                    else:
+                        allure.attach(body=f'{pv1}->{it[1]} speed {timeout} s, curr pv is {pv2}', name='Error', attachment_type=allure.attachment_type.TEXT)
+                        await self._g3api.set_pump_sp_source(i, 'Disable')
+                        assert False
+                await self._g3api.set_pump_sp_source(i, 'Disable')

@@ -27,24 +27,74 @@ g_tolerance = 0.1
 g_mcu_port = 102
 
 g_profile_do: list = [
-    [1, 10],
-    [2, 20]
+    [0.01, 10.0],
+    [0.02, 20.0],
+    [0.03, 30.0],
+    [0.04, 40.0],
+    [0.05, 50.0],
+    [0.06, 60.0],
+    [0.07, 70.0],
+    [0.08, 80.0],
+    [0.09, 90.0],
+    [0.10, 100.0]
 ]
 g_profile_ph: list = [
-    [1, 10],
-    [2, 20]
+    [0.01, 7.11],
+    [0.02, 7.12],
+    [0.03, 7.13],
+    [0.04, 7.14],
+    [0.05, 7.15],
+    [0.06, 7.16],
+    [0.07, 7.17],
+    [0.08, 7.18],
+    [0.09, 7.19],
+    [0.10, 7.20]
 ]
 g_profile_pump: list = [
-    [1, 10],
-    [2, 20]
+    [0.02, 100.0, 1.0],
+    [0.04, 200.0, 2.0],
+    [0.06, 100.0, 1.0],
+    [0.08, 200.0, 2.0],
+    [0.10, 100.0, 1.0],
+    [0.12, 200.0, 2.0],
+    [0.14, 100.0, 1.0],
+    [0.16, 200.0, 2.0],
+    [0.18, 100.0, 1.0],
+    [0.20, 200.0, 2.0],
+    [0.22, 100.0, 1.0],
+    [0.24, 200.0, 2.0],
+    [0.26, 100.0, 1.0],
+    [0.28, 200.0, 2.0],
+    [0.30, 100.0, 1.0],
+    [0.32, 200.0, 2.0],
+    [0.34, 100.0, 1.0],
+    [0.36, 200.0, 2.0],
+    [0.38, 100.0, 1.0],
+    [0.40, 200.0, 2.0]
 ]
 g_profile_agit: list = [
-    [1, 10],
-    [2, 20]
+    [0.00, 50],
+    [0.01, 100],
+    [0.02, 200],
+    [0.03, 300],
+    [0.04, 400],
+    [0.05, 500],
+    [0.06, 600],
+    [0.07, 700],
+    [0.08, 800],
+    [0.09, 900]
 ]
 g_profile_temp: list = [
-    [1, 10],
-    [2, 20]
+    [0.01, 35.1],
+    [0.02, 35.2],
+    [0.03, 35.3],
+    [0.04, 35.4],
+    [0.05, 35.5],
+    [0.06, 35.6],
+    [0.07, 35.7],
+    [0.08, 35.8],
+    [0.09, 35.9],
+    [0.10, 36.0]
 ]
 
 class G3API:
@@ -124,6 +174,12 @@ class G3API:
         self._client.write_f32(self._addr_do_sp, [sp])
 
     async def set_do_profile(self) -> list:
+        if g_profile_do is None:
+            return None
+        addr = self._addr_do_profile
+        for it in g_profile_do:
+            self._client.write_f32(addr, it)
+            addr += len(it) * 2
         return g_profile_do
 
     async def set_do_sp_source(self, source: str):
@@ -147,6 +203,12 @@ class G3API:
         self._client.write_f32(self._addr_ph_sp, [sp])
 
     async def set_ph_profile(self) -> list:
+        if g_profile_ph is None:
+            return None
+        addr = self._addr_ph_profile
+        for it in g_profile_ph:
+            self._client.write_f32(addr, it)
+            addr += len(it) * 2
         return g_profile_ph
     
     async def set_ph_sp_source(self, source: str):
@@ -204,6 +266,15 @@ class G3API:
         addr = self._addr_pump_sp_source - 1 + i * 200
         self._client.write_u16(addr, [g_map_pump[g_pumps[i]]])
 
+    async def set_pump_profile(self) -> list:
+        if g_profile_pump is None:
+            return None
+        addr = self._addr_pump_profile
+        for it in g_profile_pump:
+            self._client.write_f32(addr, it)
+            addr += len(it) * 2
+        return g_profile_pump
+
     async def set_pump_sp_source(self, i: int, source: str):
         addr = self._addr_pump_sp_source + i * 200
         index = self.get_index_by_source(source)
@@ -226,6 +297,12 @@ class G3API:
         self._client.write_f32(self._addr_agit_sp, [sp])
 
     async def set_agit_profile(self) -> list:
+        if g_profile_agit is None:
+            return None
+        addr = self._addr_agit_profile
+        for it in g_profile_agit:
+            self._client.write_f32(addr, it)
+            addr += len(it) * 2
         return g_profile_agit
 
     async def set_agit_sp_source(self, source: str):
@@ -249,6 +326,12 @@ class G3API:
         self._client.write_f32(self._addr_temp_sp, [sp])
 
     async def set_temp_profile(self) -> list:
+        if g_profile_temp is None:
+            return None
+        addr = self._addr_temp_profile
+        for it in g_profile_temp:
+            self._client.write_f32(addr, it)
+            addr += len(it) * 2
         return g_profile_temp
 
     async def set_temp_sp_source(self, source: str):
