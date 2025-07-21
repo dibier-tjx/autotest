@@ -1,0 +1,10 @@
+ERROR    snap7.common:common.py:88 b' TCP : Connection refused'
+ERROR    s7client:s7client.py:72 write error: db_number=11, start=1350, data=[1], word_len=Word, amount=2
+ERROR    snap7.common:common.py:88 b' TCP : Connection refused'
+ERROR    s7client:s7client.py:72 write error: db_number=11, start=2526, data=[300.0], word_len=Real, amount=4
+ERROR    snap7.common:common.py:88 b' TCP : Connection refused'
+ERROR    s7client:s7client.py:72 write error: db_number=11, start=2905, data=[0], word_len=Word, amount=2
+ERROR    snap7.common:common.py:88 b' TCP : Connection refused'
+ERROR    s7client:s7client.py:72 write error: db_number=11, start=2905, data=[1], word_len=Word, amount=2
+ERROR    snap7.common:common.py:88 b' TCP : Connection refused'
+ERROR    s7client:s7client.py:49 read error: db_number=11, start=2905, size=1, word_len=Word, type=c_ushort

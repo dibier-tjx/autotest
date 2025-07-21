@@ -10,19 +10,21 @@ _logger = logging.getLogger(__name__)
 class S7Client:
 
     _ip: str
+    _port: int
     _rack: int
     _slot: int
-    _client: None
+    _client: Client
 
-    def __init__(self, ip: str = '127.0.0.1', rack: int = 0, slot: int = 0):
+    def __init__(self, ip: str = '127.0.0.1', port: int = 102, rack: int = 0, slot: int = 0):
         self._ip = ip
+        self._port = port
         self._rack = rack
         self._slot = slot
         self._client = Client()
         
     def _connected_(self) -> bool:
         if not self._client.get_connected():
-            self._client.connect(self._ip, self._rack, self._slot)
+            self._client.connect(self._ip, self._rack, self._slot, self._port)
         return self._client.get_connected()
         
     def _do_(self, func, retry: int = 3, s: float = 0.05) -> bool:
