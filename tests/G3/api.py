@@ -1,8 +1,51 @@
 from s7client import S7Client
 
+g_map_mfc = {
+    'Air': 1,
+    'O₂': 2,
+    'N₂': 3,
+    'CO₂': 4
+}
+g_map_pump = {
+    'Base': 1,
+    'Acid': 2,
+    'AF': 3,
+    'Feed': 4
+}
+
+g_pumps = ['Base', 'Acid', 'AF', 'Feed', 'Feed', 'Feed']
+g_mfcs = ['Air', 'O₂', 'N₂', 'CO₂']
+g_agit_sps = [100.0, 200.0, 500.0]
+g_pump_sps = [50.0, 100.0, 200.0]
+g_temp_sps = [10.0, 20.0, 40.0]
+g_do_sps = [10.0, 20.0, 30.0]
+g_mfc_sps = [1.0, 2.0, 3.0]
+g_ph_sps = [1.0, 4.0, 8.0]
 g_temp_to_agit = 300.0
 g_mcu_ip = '127.0.0.1'
+g_tolerance = 0.1
 g_mcu_port = 102
+
+g_profile_do: list = [
+    [1, 10],
+    [2, 20]
+]
+g_profile_ph: list = [
+    [1, 10],
+    [2, 20]
+]
+g_profile_pump: list = [
+    [1, 10],
+    [2, 20]
+]
+g_profile_agit: list = [
+    [1, 10],
+    [2, 20]
+]
+g_profile_temp: list = [
+    [1, 10],
+    [2, 20]
+]
 
 class G3API:
 
@@ -39,27 +82,6 @@ class G3API:
     _addr_temp_profile: int = 2251
     _addr_temp_sp_source: int = 2250
 
-    _profile_do: list = [
-        [1, 10],
-        [2, 20]
-    ]
-    _profile_ph: list = [
-        [1, 10],
-        [2, 20]
-    ]
-    _profile_temp: list = [
-        [1, 10],
-        [2, 20]
-    ]
-    _profile_agit: list = [
-        [1, 10],
-        [2, 20]
-    ]
-    _profile_temp: list = [
-        [1, 10],
-        [2, 20]
-    ]
-
     def __init__(self, ip: str = g_mcu_ip, port: int = g_mcu_port, rack: int = 0, slot: int = 0):
         self._client = S7Client(ip, port, rack, slot)
 
@@ -89,14 +111,10 @@ class G3API:
         DO
     '''
     def get_do_sps(self) -> float:
-        return [
-            10.0, 
-            20.0, 
-            30.0
-        ]
+        return g_do_sps
     
     def get_do_tolerance(self) -> float:
-        return 0.1
+        return g_tolerance
     
     async def get_do_pv(self) -> float:
         res = self._client.read_f32(self._addr_do_pv)
@@ -106,7 +124,7 @@ class G3API:
         self._client.write_f32(self._addr_do_sp, [sp])
 
     async def set_do_profile(self) -> list:
-        return self._profile_do
+        return g_profile_do
 
     async def set_do_sp_source(self, source: str):
         index = self.get_sensor_index_by_source(source)
@@ -116,14 +134,10 @@ class G3API:
         pH
     '''
     def get_ph_sps(self) -> float:
-        return [
-            1.0,
-            4.0,
-            8.0
-        ]
+        return g_ph_sps
     
     def get_ph_tolerance(self) -> float:
-        return 0.1
+        return g_tolerance
     
     async def get_ph_pv(self) -> float:
         res = self._client.read_f32(self._addr_ph_pv)
@@ -133,7 +147,7 @@ class G3API:
         self._client.write_f32(self._addr_ph_sp, [sp])
 
     async def set_ph_profile(self) -> list:
-        return self._profile_ph
+        return g_profile_ph
     
     async def set_ph_sp_source(self, source: str):
         index = self.get_sensor_index_by_source(source)
@@ -143,22 +157,13 @@ class G3API:
         MFC
     '''
     def get_mfcs(self) -> list:
-        return [
-            'Air',
-            'O₂',
-            'N₂',
-            'CO₂'
-        ]
+        return g_mfcs
 
     def get_mfc_sps(self, i: int) -> float:
-        return [
-            1.0,
-            2.0,
-            3.0
-        ]
+        return g_mfc_sps
     
     def get_mfc_tolerance(self, i: int) -> float:
-        return 0.1
+        return g_tolerance
     
     async def get_mfc_pv(self, i: int) -> float:
         addr = self._addr_mfc_pv + i * 2
@@ -168,6 +173,8 @@ class G3API:
     async def set_mfc_sp(self, i: int, sp: float):
         addr = self._addr_mfc_sp + i * 2
         self._client.write_f32(addr, [sp])
+        addr = self._addr_mfc_sp_source - 1 + i * 10
+        self._client.write_u16(addr, [g_map_mfc[g_mfcs[i]]])
 
     async def set_mfc_sp_source(self, i: int, source: str):
         addr = self._addr_mfc_sp_source + i * 10
@@ -178,24 +185,13 @@ class G3API:
         Pump
     '''
     def get_pumps(self) -> list:
-        return [
-            'Base',
-            'Acid',
-            'AF',
-            'Feed1',
-            'Feed2',
-            'Feed3'
-        ]
+        return g_pumps
 
     def get_pump_sps(self, i: int) -> float:
-        return [
-            50.0,
-            100.0,
-            200.0
-        ]
+        return g_pump_sps
     
     def get_pump_tolerance(self, i: int) -> float:
-        return 0.1
+        return g_tolerance
     
     async def get_pump_pv(self, i: int) -> float:
         addr = self._addr_pump_pv + i * 4
@@ -205,6 +201,8 @@ class G3API:
     async def set_pump_sp(self, i: int, sp: float):
         addr = self._addr_pump_sp + i * 2
         self._client.write_f32(addr, [sp])
+        addr = self._addr_pump_sp_source - 1 + i * 200
+        self._client.write_u16(addr, [g_map_pump[g_pumps[i]]])
 
     async def set_pump_sp_source(self, i: int, source: str):
         addr = self._addr_pump_sp_source + i * 200
@@ -215,14 +213,10 @@ class G3API:
         Agit
     '''
     def get_agit_sps(self) -> float:
-        return [
-            100.0,
-            200.0,
-            500.0
-        ]
+        return g_agit_sps
     
     def get_agit_tolerance(self) -> float:
-        return 0.1
+        return g_tolerance
     
     async def get_agit_pv(self) -> float:
         res = self._client.read_f32(self._addr_agit_pv)
@@ -232,7 +226,7 @@ class G3API:
         self._client.write_f32(self._addr_agit_sp, [sp])
 
     async def set_agit_profile(self) -> list:
-        return self._profile_agit
+        return g_profile_agit
 
     async def set_agit_sp_source(self, source: str):
         index = self.get_index_by_source(source)
@@ -242,14 +236,10 @@ class G3API:
         Temp
     '''
     def get_temp_sps(self) -> float:
-        return [
-            10.0, 
-            20.0, 
-            40.0
-        ]
+        return g_temp_sps
     
     def get_temp_tolerance(self) -> float:
-        return 0.1
+        return g_tolerance
     
     async def get_temp_pv(self) -> float:
         res = self._client.read_f32(self._addr_temp_pv)
@@ -259,7 +249,7 @@ class G3API:
         self._client.write_f32(self._addr_temp_sp, [sp])
 
     async def set_temp_profile(self) -> list:
-        return self._profile_temp
+        return g_profile_temp
 
     async def set_temp_sp_source(self, source: str):
         index = self.get_sensor_index_by_source(source)
