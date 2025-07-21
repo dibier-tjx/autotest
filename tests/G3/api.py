@@ -86,14 +86,14 @@ g_profile_temp: list = [
 
 g_map_mfc = {
     'Air': 1,
-    'O₂': 2,
-    'N₂': 3,
+    'O₂' : 2,
+    'N₂' : 3,
     'CO₂': 4
 }
 g_map_pump = {
     'Base': 1,
     'Acid': 2,
-    'AF': 3,
+    'AF'  : 3,
     'Feed': 4
 }
 
