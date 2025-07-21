@@ -9,9 +9,9 @@ g_do_sps = [10.0, 20.0, 30.0]
 g_mfc_sps = [1.0, 2.0, 3.0]
 g_ph_sps = [1.0, 4.0, 8.0]
 g_temp_to_agit = 300.0
-g_mcu_ip = '127.0.0.1'
+g_mcu_ip = '106.14.19.189'
 g_tolerance = 0.01
-g_mcu_port = 102
+g_mcu_port = 2183
 
 g_profile_do: list = [
     [0.01, 10.0],

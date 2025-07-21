@@ -1,1 +1,0 @@
-curr pv is nan, expect is greater than zero

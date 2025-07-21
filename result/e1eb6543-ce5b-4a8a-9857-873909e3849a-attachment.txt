@@ -1,0 +1,2 @@
+ERROR    s7client:s7client.py:49 read error: db_number=11, start=2950.0, size=1, word_len=Real, type=c_float
+ERROR    s7client:s7client.py:49 read error: db_number=11, start=2950.0, size=1, word_len=Real, type=c_float
