@@ -1,6 +1,5 @@
 from s7client import S7Client
 
-
 g_pumps = ['Base', 'Acid', 'AF', 'Feed', 'Feed', 'Feed']
 g_mfcs = ['Air', 'O₂', 'N₂', 'CO₂']
 g_agit_sps = [100.0, 200.0, 500.0]
