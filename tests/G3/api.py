@@ -1,17 +1,5 @@
 from s7client import S7Client
 
-g_map_mfc = {
-    'Air': 1,
-    'O₂': 2,
-    'N₂': 3,
-    'CO₂': 4
-}
-g_map_pump = {
-    'Base': 1,
-    'Acid': 2,
-    'AF': 3,
-    'Feed': 4
-}
 
 g_pumps = ['Base', 'Acid', 'AF', 'Feed', 'Feed', 'Feed']
 g_mfcs = ['Air', 'O₂', 'N₂', 'CO₂']
@@ -23,7 +11,7 @@ g_mfc_sps = [1.0, 2.0, 3.0]
 g_ph_sps = [1.0, 4.0, 8.0]
 g_temp_to_agit = 300.0
 g_mcu_ip = '127.0.0.1'
-g_tolerance = 0.1
+g_tolerance = 0.01
 g_mcu_port = 102
 
 g_profile_do: list = [
@@ -96,6 +84,19 @@ g_profile_temp: list = [
     [0.09, 35.9],
     [0.10, 36.0]
 ]
+
+g_map_mfc = {
+    'Air': 1,
+    'O₂': 2,
+    'N₂': 3,
+    'CO₂': 4
+}
+g_map_pump = {
+    'Base': 1,
+    'Acid': 2,
+    'AF': 3,
+    'Feed': 4
+}
 
 class G3API:
 
