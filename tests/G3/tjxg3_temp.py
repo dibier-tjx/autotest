@@ -10,7 +10,7 @@ class TJXG3Temp:
 
     _g3api: G3API = G3API()    
 
-    async def pv_close_to_sp(self, sp: float, timeout: float = 60):
+    async def pv_close_to_sp(self, sp: float, timeout: float = 600):
         start_time = asyncio.get_running_loop().time()
         tolerance = self._g3api.get_temp_tolerance()
         while True:
