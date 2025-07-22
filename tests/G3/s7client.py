@@ -35,7 +35,7 @@ class S7Client:
             retry -= 1
         return False
 
-    def _read_s7_(self, db_number: int, start: int, size: int, word_len: WordLen, type: ctypes, ms: int = 1000) -> list:
+    def _read_s7_(self, db_number: int, start: int, size: int, word_len: WordLen, type: ctypes, ms: int = 5000) -> list:
         try:
             buf = (type * size)()
             def func() -> bool:
@@ -49,7 +49,7 @@ class S7Client:
             _logger.error(f'read error: db_number={db_number}, start={start}, size={size}, word_len={word_len.name}, type={type.__name__}')
         return None
         
-    def _write_s7_(self, db_number: int, start: int, data: list, word_len: WordLen, amount: int, ms: int = 1000) -> bool:
+    def _write_s7_(self, db_number: int, start: int, data: list, word_len: WordLen, amount: int, ms: int = 5000) -> bool:
         try:
             size = len(data)
             buf = (ctypes.c_uint8 * (size * amount))()
