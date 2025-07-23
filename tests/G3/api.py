@@ -177,10 +177,7 @@ class G3API:
     async def set_do_profile(self) -> list:
         if g_profile_do is None:
             return None
-        addr = self._addr_do_profile
-        for it in g_profile_do:
-            self._client.write_f32(addr, it)
-            addr += len(it) * 2
+        self._client.write_f32(self._addr_do_profile, [item for sublist in g_profile_do for item in sublist])
         return g_profile_do
 
     async def set_do_sp_source(self, source: str):
@@ -206,10 +203,7 @@ class G3API:
     async def set_ph_profile(self) -> list:
         if g_profile_ph is None:
             return None
-        addr = self._addr_ph_profile
-        for it in g_profile_ph:
-            self._client.write_f32(addr, it)
-            addr += len(it) * 2
+        self._client.write_f32(self._addr_ph_profile, [item for sublist in g_profile_ph for item in sublist])
         return g_profile_ph
     
     async def set_ph_sp_source(self, source: str):
@@ -270,10 +264,7 @@ class G3API:
     async def set_pump_profile(self) -> list:
         if g_profile_pump is None:
             return None
-        addr = self._addr_pump_profile
-        for it in g_profile_pump:
-            self._client.write_f32(addr, it)
-            addr += len(it) * 2
+        self._client.write_f32(self._addr_pump_profile, [item for sublist in g_profile_pump for item in sublist])
         return g_profile_pump
 
     async def set_pump_sp_source(self, i: int, source: str):
@@ -300,10 +291,7 @@ class G3API:
     async def set_agit_profile(self) -> list:
         if g_profile_agit is None:
             return None
-        addr = self._addr_agit_profile
-        for it in g_profile_agit:
-            self._client.write_f32(addr, it)
-            addr += len(it) * 2
+        self._client.write_f32(self._addr_agit_profile, [item for sublist in g_profile_agit for item in sublist])
         return g_profile_agit
 
     async def set_agit_sp_source(self, source: str):
@@ -329,10 +317,7 @@ class G3API:
     async def set_temp_profile(self) -> list:
         if g_profile_temp is None:
             return None
-        addr = self._addr_temp_profile
-        for it in g_profile_temp:
-            self._client.write_f32(addr, it)
-            addr += len(it) * 2
+        self._client.write_f32(self._addr_temp_profile, [item for sublist in g_profile_temp for item in sublist])
         return g_profile_temp
 
     async def set_temp_sp_source(self, source: str):
